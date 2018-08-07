@@ -7,7 +7,7 @@ using Directory = System.IO.Directory;
 
 namespace MetadataInfo
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
@@ -28,7 +28,16 @@ namespace MetadataInfo
                     {
                         var directories = ImageMetadataReader.ReadMetadata(filePath);
 
+                        foreach (var exif in directories.Where(d => d.Name == "Exif IFD0"))
+                        {
+                            var keywords = exif.Tags.Where(t => t.Name == "Windows XP Keywords").SelectMany(t => t.Description.Split(',', ';')).ToList();
+                            if (keywords.Count > 0)
+                                Console.WriteLine($"{filePath} keywords: {string.Join(", ", keywords)}");
+                        }
+
+/*
                         var items = new List<string>();
+
 
                         foreach (var directory in directories)
                         {
@@ -42,14 +51,17 @@ namespace MetadataInfo
                         Console.WriteLine(items.Count > 0
                             ? $"{Environment.NewLine}{filePath}:{Environment.NewLine}\t{string.Join($"{Environment.NewLine}\t", items)}"
                             : $"{Environment.NewLine}{filePath} contains no metadata");
+*/
 
                         ++scanned;
 
+/*
                         if (scanned % 100 == 0)
                         {
                             Console.WriteLine($"Scanned {scanned:N0} of {filePaths.Length:N0}");
                             break;
                         }
+*/
                     }
                     catch (Exception ex)
                     {
