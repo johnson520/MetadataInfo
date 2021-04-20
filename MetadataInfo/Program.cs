@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MetadataExtractor;
@@ -23,7 +22,6 @@ namespace MetadataInfo
                 var scanned = 0;
 
                 foreach (var filePath in filePaths)
-                {
                     try
                     {
                         var directories = ImageMetadataReader.ReadMetadata(filePath);
@@ -67,7 +65,6 @@ namespace MetadataInfo
                     {
                         Console.WriteLine($"{ex.GetType().Name} '{ex.Message}' thrown processing {filePath}");
                     }
-                }
             }
 
             Console.WriteLine();
